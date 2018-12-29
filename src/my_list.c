@@ -55,39 +55,40 @@ void insert_at_tail(List* a_list, const void *data, size_t bytes)
     }
 }
 
-// void insert_at_pos(List *a_list, int data, int pos)
-// {
-//     int k;
-//     Node *new_node, *tmp, *tmp2;
+void insert_at_pos(List *a_list, const void *data, int pos, size_t bytes)
+{
+    int k;
+    Node *new_node, *tmp, *tmp2;
 
-//     if(*a_list == NULL || pos == 1)
-//         insert_at_head(a_list, data);
-//     else
-//     {
-//         // allocate memory for our new node
-//         new_node = (Node*) malloc(sizeof(Node));
+    if(*a_list == NULL || pos == 1)
+        insert_at_head(a_list, data, bytes);
+    else
+    {
+        // allocate memory for our new node
+        new_node = (Node*) malloc(sizeof(Node));
 
-//         // initialize new node
-//         new_node->data = data;
+        // initialize new node
+        new_node->data = malloc(bytes);
+        memcpy(new_node->data, data, bytes);
 
-//         // initialize
-//         k = 2;
-//         tmp = *a_list;
-//         tmp2 = tmp->next;
+        // initialize
+        k = 2;
+        tmp = *a_list;
+        tmp2 = tmp->next;
 
-//         // go to the end or until pos is found
-//         while(tmp2 != NULL && k < pos)
-//         {
-//             tmp = tmp->next;
-//             tmp2 = tmp2->next;
-//             k++;
-//         }
+        // go to the end or until pos is found
+        while(tmp2 != NULL && k < pos)
+        {
+            tmp = tmp->next;
+            tmp2 = tmp2->next;
+            k++;
+        }
 
-//         // insert node
-//         new_node->next = tmp->next;
-//         tmp->next = new_node;
-//     }
-// }
+        // insert node
+        new_node->next = tmp->next;
+        tmp->next = new_node;
+    }
+}
 
 void* remove_from_head(List* a_list, size_t bytes)
 {
@@ -158,40 +159,42 @@ void* remove_from_tail(List *a_list, size_t bytes)
     return data;
 }
 
-// int remove_from_pos(List* a_list, int pos)
-// {
-//     int data, k;
-//     Node *tmp, *tmp2;
+void* remove_from_pos(List* a_list, int pos, size_t bytes)
+{
+    int k;
+    void *data;
+    Node *tmp, *tmp2;
 
-//     if(*a_list == NULL)
-//     {
-//         printf("Could not remove from an empty list\n");
-//         return 0;
-//     }
+    if(*a_list == NULL)
+    {
+        printf("Could not remove from an empty list\n");
+        return NULL;
+    }
 
-//     if(pos == 1)
-//         return remove_from_head(a_list);
-//     else
-//     {
-//         // initialize
-//         k = 2;
-//         tmp = *a_list;
-//         tmp2 = tmp->next;
+    if(pos == 1)
+        return remove_from_head(a_list, bytes);
+    else
+    {
+        // initialize
+        k = 2;
+        data = malloc(bytes);
+        tmp = *a_list;
+        tmp2 = tmp->next;
 
-//         // go to the end or until pos is found
-//         while(tmp2 != NULL && k < pos)
-//         {
-//             tmp = tmp->next;
-//             tmp2 = tmp2->next;
-//             k++;
-//         }
+        // go to the end or until pos is found
+        while(tmp2 != NULL && k < pos)
+        {
+            tmp = tmp->next;
+            tmp2 = tmp2->next;
+            k++;
+        }
 
-//         data = tmp2->data;
-//         tmp->next = tmp2->next;
-//         free(tmp2);
-//         return data;
-//     }
-// }
+        memcpy(data, tmp2->data, bytes);
+        tmp->next = tmp2->next;
+        free(tmp2);
+        return data;
+    }
+}
 
 void print_list_of_ints(List a_list)
 {
