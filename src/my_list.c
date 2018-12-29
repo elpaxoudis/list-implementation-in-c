@@ -26,33 +26,34 @@ void insert_at_head(List* a_list, const void *data, size_t bytes)
     *a_list = new_node;
 }
 
-// void insert_at_tail(List* a_list, int data)
-// {
-//     Node *tmp, *new_node;
+void insert_at_tail(List* a_list, const void *data, size_t bytes)
+{
+    Node *tmp, *new_node;
 
-//     // check for empty list
-//     if(*a_list == NULL)
-//         insert_at_head(a_list, data);
-//     else
-//     {
-//         // start from the head
-//         tmp = *a_list;
+    // check for empty list
+    if(*a_list == NULL)
+        insert_at_head(a_list, data, bytes);
+    else
+    {
+        // start from the head
+        tmp = *a_list;
 
-//         // and find the last node
-//         while(tmp->next != NULL)
-//             tmp = tmp->next;
+        // and find the last node
+        while(tmp->next != NULL)
+            tmp = tmp->next;
 
-//         // allocate memory for our new node
-//         new_node = (Node*) malloc(sizeof(Node));
+        // allocate memory for our new node
+        new_node = (Node*) malloc(sizeof(Node));
 
-//         // initialize new node
-//         new_node->data = data;
+        // initialize new node
+        new_node->data = malloc(bytes);
+        memcpy(new_node->data, data, bytes);
 
-//         // insert node
-//         new_node->next = tmp->next;
-//         tmp->next = new_node;
-//     }
-// }
+        // insert node
+        new_node->next = tmp->next;
+        tmp->next = new_node;
+    }
+}
 
 // void insert_at_pos(List *a_list, int data, int pos)
 // {
@@ -97,7 +98,7 @@ void* remove_from_head(List* a_list, size_t bytes)
     if(*a_list == NULL)
     {
         printf("Cannot remove anything from an empty list\n");
-        return 0;
+        return NULL;
     }
 
     // keep a reference to the first node
@@ -115,44 +116,47 @@ void* remove_from_head(List* a_list, size_t bytes)
     return data;
 }
 
-// int remove_from_tail(List *a_list)
-// {
-//     int data;
-//     Node *tmp, *tmp2;
+void* remove_from_tail(List *a_list, size_t bytes)
+{
+    void *data;
+    Node *tmp, *tmp2;
 
-//     // check for an empty list
-//     if(*a_list == NULL)
-//     {
-//         printf("Cannot remove anything from an empty list\n");
-//         return 0;
-//     }
+    // check for an empty list
+    if(*a_list == NULL)
+    {
+        printf("Cannot remove anything from an empty list\n");
+        return NULL;
+    }
 
-//     // start from the head
-//     tmp = *a_list;
+    // start from the head
+    tmp = *a_list;
+    data = malloc(sizeof(bytes));
+    if(data == NULL)
+        perror("Could not allocate memory\n");
 
-//     // check for only one node
-//     if(tmp->next == NULL)
-//     {
-//         data = tmp->data;
-//         *a_list = NULL;
-//         free(tmp);
-//     }
-//     else
-//     {
-//         // go to the second from last node
-//         while(tmp->next->next != NULL)
-//             tmp = tmp->next;
+    // check for only one node
+    if(tmp->next == NULL)
+    {
+        memcpy(data, tmp->data, bytes);
+        *a_list = NULL;
+        free(tmp);
+    }
+    else
+    {
+        // go to the second from last node
+        while(tmp->next->next != NULL)
+            tmp = tmp->next;
 
-//         // get a reference to the last node
-//         tmp2 = tmp->next;
+        // get a reference to the last node
+        tmp2 = tmp->next;
+    
+        memcpy(data, tmp2->data, bytes);
+        tmp->next = NULL;
+        free(tmp2);
+    }
 
-//         data = tmp2->data;
-//         tmp->next = NULL;
-//         free(tmp2);
-//     }
-
-//     return data;
-// }
+    return data;
+}
 
 // int remove_from_pos(List* a_list, int pos)
 // {
