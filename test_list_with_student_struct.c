@@ -58,6 +58,12 @@ void get_input(List *a_list)
             memcpy(new_student->last_name, buf, strlen(buf));
         }
 
+        // for debugging
+        // print_student(new_student);
+
+        // add new student to the list
+        insert_at_tail(a_list, new_student, sizeof(Student));
+
         printf("DONE!\n\n");
         printf("1. Insert new student\n0. Exit\n\n");
         scanf("%d", &menu_choice);
@@ -68,7 +74,7 @@ void print_student(const void* student)
 {
     Student student_cpy;
     
-    memcpy(&student_cpy, &student, sizeof(Student));
+    memcpy(&student_cpy, student, sizeof(Student));
 
     printf("Student ID: %d\nFirst Name: %s\nLast Name: %s\n\n",
         student_cpy.id,
