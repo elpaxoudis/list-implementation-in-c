@@ -15,5 +15,3 @@ void insert_at_pos(List*, const void*, int, size_t);
 void* remove_from_head(List*, size_t);
 void* remove_from_tail(List*, size_t);
 void* remove_from_pos(List*, int, size_t);
-
-void print_list_of_ints(List);
