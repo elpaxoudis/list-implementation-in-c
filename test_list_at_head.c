@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "src/my_list.h"
+#include "src/output_helpers.h"
 
 int main(int argc, char* argv[])
 {
