@@ -1,5 +1,5 @@
 struct node {
-    int data;
+    void* data;
     struct node* next;
 };
 
@@ -8,11 +8,11 @@ typedef Node* List;
 
 void init_list(List*);
 
-void insert_at_head(List*, int);
+void insert_at_head(List*, const void*, size_t);
 void insert_at_tail(List*, int);
 void insert_at_pos(List*, int, int);
 
-int remove_from_head(List*);
+void* remove_from_head(List*, size_t);
 int remove_from_tail(List*);
 int remove_from_pos(List*, int);
 
